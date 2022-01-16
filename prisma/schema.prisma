@@ -53,7 +53,7 @@ model Event {
   assets         Event_Asset[]
   comments       Comment[]
   Liked_Events   Liked_Event[]
-  Event_Tags     Event_Tag[]
+  tags           Event_Tag[]
 }
 
 model Liked_Event {
