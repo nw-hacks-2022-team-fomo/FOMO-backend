@@ -12,6 +12,7 @@ import {
   Prisma,
   User as UserModel,
   Liked_Event as LikedEventModel,
+  User_Link as UserLinkModel,
 } from '@prisma/client';
 
 @Controller('user')
@@ -56,7 +57,7 @@ export class UserController {
     return this.userService.user({ id: Number(id) });
   }
 
-  @Get('/:id/like')
+  @Get('/:id/likes')
   async getUserLikedEvents(
     @Param('id') id: string,
     @Body()
@@ -69,6 +70,24 @@ export class UserController {
     },
   ): Promise<LikedEventModel[]> {
     return this.userService.getUserLikedEvents({
+      ...userData,
+      where: { user_id: Number(id) },
+    });
+  }
+
+  @Get('/:id/links')
+  async getUserLinks(
+    @Param('id') id: string,
+    @Body()
+    userData: {
+      skip?: number;
+      take?: number;
+      cursor?: Prisma.User_LinkWhereUniqueInput;
+      where?: Prisma.User_LinkWhereInput;
+      orderBy?: Prisma.User_LinkOrderByWithRelationInput;
+    },
+  ): Promise<UserLinkModel[]> {
+    return this.userService.getUserLinks({
       ...userData,
       where: { user_id: Number(id) },
     });
