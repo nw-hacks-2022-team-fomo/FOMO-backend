@@ -11,17 +11,29 @@ datasource db {
 }
 
 model User {
-  id           Int       @id @unique @default(autoincrement())
-  email        String?   @db.VarChar(255)
-  phone_number String?   @db.VarChar(255)
-  first_name   String    @db.VarChar(255)
-  middle_name  String?   @db.VarChar(255)
-  last_name    String    @db.VarChar(255)
-  bio          String    @db.Text
-  longitude    Float     @db.DoublePrecision
-  latitude     Float     @db.DoublePrecision
+  id           Int           @id @unique @default(autoincrement())
+  email        String?       @db.VarChar(255)
+  phone_number String?       @db.VarChar(255)
+  first_name   String        @db.VarChar(255)
+  middle_name  String?       @db.VarChar(255)
+  last_name    String        @db.VarChar(255)
+  age          Int
+  gender       String        @db.VarChar(255)
+  bio          String        @db.Text
+  longitude    Float         @db.DoublePrecision
+  latitude     Float         @db.DoublePrecision
   events       Event[]
   comments     Comment[]
+  Liked_Events Liked_Event[]
+  User_Link    User_Link[]
+}
+
+model User_Link {
+  id      Int    @id @unique @default(autoincrement())
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id Int
+  alias   String @db.VarChar(255)
+  link    String @db.Text
 }
 
 model Event {
@@ -31,10 +43,22 @@ model Event {
   event_name     String        @db.VarChar(255)
   longitude      Float         @db.DoublePrecision
   latitude       Float         @db.DoublePrecision
+  time           DateTime
+  participants   Int
   price_estimate Int
   description    String        @db.Text
   assets         Event_Asset[]
   comments       Comment[]
+  Liked_Events   Liked_Event[]
+  Event_Tags     Event_Tag[]
+}
+
+model Liked_Event {
+  id       Int   @id @unique @default(autoincrement())
+  user     User  @relation(fields: [user_id], references: [id])
+  user_id  Int
+  event    Event @relation(fields: [event_id], references: [id])
+  event_id Int
 }
 
 model Event_Asset {
@@ -42,7 +66,13 @@ model Event_Asset {
   event    Event  @relation(fields: [event_id], references: [id])
   event_id Int
   name     String @db.VarChar(255)
+}
 
+model Event_Tag {
+  id       Int    @id @unique @default(autoincrement())
+  event    Event  @relation(fields: [event_id], references: [id])
+  event_id Int
+  tag      String @db.VarChar(255)
 }
 
 model Comment {
