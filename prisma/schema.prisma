@@ -46,6 +46,9 @@ model Event {
   time           DateTime
   participants   Int
   price_estimate Int
+  likes          Int
+  shares         Int
+  share_link     String        @db.Text
   description    String        @db.Text
   assets         Event_Asset[]
   comments       Comment[]

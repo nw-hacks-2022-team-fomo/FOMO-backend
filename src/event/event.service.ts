@@ -12,6 +12,9 @@ export class EventService {
   ): Promise<Event | null> {
     return this.prisma.event.findUnique({
       where: eventWhereUniqueInput,
+      include: {
+        user: true,
+      },
     });
   }
 

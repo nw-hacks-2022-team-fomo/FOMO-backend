@@ -27,6 +27,9 @@ export class EventController {
       event_name: string;
       longitude: number;
       time: Date;
+      likes: number;
+      shares: number;
+      share_link: string;
       participants: number;
       latitude: number;
       price_estimate: number;
@@ -38,6 +41,9 @@ export class EventController {
       event_name,
       longitude,
       latitude,
+      likes,
+      shares,
+      share_link,
       participants,
       time,
       price_estimate,
@@ -49,6 +55,9 @@ export class EventController {
       time,
       participants,
       latitude,
+      likes,
+      shares,
+      share_link,
       price_estimate,
       description,
       user: {
@@ -136,6 +145,9 @@ export class EventController {
       longitude: number;
       latitude: number;
       time: Date;
+      likes: number;
+      shares: number;
+      share_link: string;
       participants: number;
       price_estimate: number;
       description: string;
