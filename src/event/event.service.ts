@@ -32,6 +32,9 @@ export class EventService {
       cursor,
       where,
       orderBy,
+      include: {
+        user: true,
+      },
     });
   }
 
@@ -117,7 +120,11 @@ export class EventService {
     coords: { latitude: number; longitude: number };
   }): Promise<Event[]> {
     const { distance, coords } = params;
-    const events: Event[] = await this.prisma.event.findMany();
+    const events: Event[] = await this.prisma.event.findMany({
+      include: {
+        user: true,
+      },
+    });
     return events.filter((value, index, array) => {
       return (
         getDistance(coords, {
