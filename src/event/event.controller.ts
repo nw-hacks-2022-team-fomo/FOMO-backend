@@ -71,6 +71,20 @@ export class EventController {
     return this.eventService.events(eventData);
   }
 
+  @Get('/nearby-events')
+  async getNearbyEventsByDistance(
+    @Body()
+    eventData: {
+      distance: number;
+      coords: {
+        latitude: number;
+        longitude: number;
+      };
+    },
+  ): Promise<EventModel[]> {
+    return this.eventService.getEventsWithinDistance(eventData);
+  }
+
   @Get('/:id')
   async getEvent(@Param('id') id: string): Promise<EventModel> {
     return this.eventService.event({ id: Number(id) });

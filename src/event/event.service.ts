@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, Event, Event_Tag, Event_Asset, Comment } from '@prisma/client';
+import { getDistance } from 'geolib';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -105,6 +106,22 @@ export class EventService {
       include: {
         user: true,
       },
+    });
+  }
+
+  async getEventsWithinDistance(params: {
+    distance: number;
+    coords: { latitude: number; longitude: number };
+  }): Promise<Event[]> {
+    const { distance, coords } = params;
+    const events: Event[] = await this.prisma.event.findMany();
+    return events.filter((value, index, array) => {
+      return (
+        getDistance(coords, {
+          latitude: value.latitude,
+          longitude: value.longitude,
+        }) <= distance
+      );
     });
   }
 }
