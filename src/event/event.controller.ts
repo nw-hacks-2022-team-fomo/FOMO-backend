@@ -84,16 +84,14 @@ export class EventController {
 
   @Get('/nearby-events')
   async getNearbyEventsByDistance(
-    @Query()
-    eventData: {
-      distance: number;
-      coords: {
-        latitude: number;
-        longitude: number;
-      };
-    },
+    @Query('distance') distance: number,
+    @Query('latitude') latitude: number,
+    @Query('longitude') longitude: number,
   ): Promise<EventModel[]> {
-    return this.eventService.getEventsWithinDistance(eventData);
+    return this.eventService.getEventsWithinDistance({
+      distance,
+      coords: { latitude, longitude },
+    });
   }
 
   @Get('/:id')
