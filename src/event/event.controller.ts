@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { EventService } from './event.service';
 import {
@@ -14,6 +15,7 @@ import {
   Comment as CommentModel,
   Prisma,
 } from '@prisma/client';
+import { query } from 'express';
 
 @Controller('event')
 export class EventController {
@@ -68,7 +70,7 @@ export class EventController {
 
   @Get()
   async filterEvents(
-    @Body()
+    @Query()
     eventData: {
       skip?: number;
       take?: number;
@@ -82,7 +84,7 @@ export class EventController {
 
   @Get('/nearby-events')
   async getNearbyEventsByDistance(
-    @Body()
+    @Query()
     eventData: {
       distance: number;
       coords: {
@@ -102,7 +104,7 @@ export class EventController {
   @Get('/:id/tags')
   async getEventTags(
     @Param('id') id: string,
-    @Body()
+    @Query()
     eventData: {
       skip?: number;
       take?: number;
@@ -120,7 +122,7 @@ export class EventController {
   @Get('/:id/comments')
   async getEventComments(
     @Param('id') id: string,
-    @Body()
+    @Query()
     eventData: {
       skip?: number;
       take?: number;

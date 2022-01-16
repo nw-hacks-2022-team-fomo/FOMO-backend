@@ -14,9 +14,21 @@ export class EventService {
       where: eventWhereUniqueInput,
       include: {
         user: true,
-        assets: true,
-        comments: true,
-        tags: true,
+        assets: {
+          select: {
+            name: true,
+          },
+        },
+        comments: {
+          select: {
+            text: true,
+          },
+        },
+        tags: {
+          select: {
+            tag: true,
+          },
+        },
       },
     });
   }
@@ -37,9 +49,21 @@ export class EventService {
       orderBy,
       include: {
         user: true,
-        assets: true,
-        comments: true,
-        tags: true,
+        assets: {
+          select: {
+            name: true,
+          },
+        },
+        comments: {
+          select: {
+            text: true,
+          },
+        },
+        tags: {
+          select: {
+            tag: true,
+          },
+        },
       },
     });
   }
@@ -129,9 +153,21 @@ export class EventService {
     const events: Event[] = await this.prisma.event.findMany({
       include: {
         user: true,
-        assets: true,
-        comments: true,
-        tags: true,
+        assets: {
+          select: {
+            name: true,
+          },
+        },
+        comments: {
+          select: {
+            text: true,
+          },
+        },
+        tags: {
+          select: {
+            tag: true,
+          },
+        },
       },
     });
     return events.filter((value, index, array) => {

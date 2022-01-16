@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import {
@@ -40,7 +41,7 @@ export class UserController {
 
   @Get()
   async filterUsers(
-    @Body()
+    @Query()
     userAssetData: {
       skip?: number;
       take?: number;
@@ -60,7 +61,7 @@ export class UserController {
   @Get('/:id/likes')
   async getUserLikedEvents(
     @Param('id') id: string,
-    @Body()
+    @Query()
     userData: {
       skip?: number;
       take?: number;
@@ -78,7 +79,7 @@ export class UserController {
   @Get('/:id/links')
   async getUserLinks(
     @Param('id') id: string,
-    @Body()
+    @Query()
     userData: {
       skip?: number;
       take?: number;
