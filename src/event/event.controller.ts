@@ -8,7 +8,12 @@ import {
   Put,
 } from '@nestjs/common';
 import { EventService } from './event.service';
-import { Event as EventModel, Prisma } from '@prisma/client';
+import {
+  Event as EventModel,
+  Event_Tag as EventTagModel,
+  Comment as CommentModel,
+  Prisma,
+} from '@prisma/client';
 
 @Controller('event')
 export class EventController {
@@ -21,6 +26,8 @@ export class EventController {
       user_id: number;
       event_name: string;
       longitude: number;
+      time: Date;
+      participants: number;
       latitude: number;
       price_estimate: number;
       description: string;
@@ -31,12 +38,16 @@ export class EventController {
       event_name,
       longitude,
       latitude,
+      participants,
+      time,
       price_estimate,
       description,
     } = eventData;
     return this.eventService.createEvent({
       event_name,
       longitude,
+      time,
+      participants,
       latitude,
       price_estimate,
       description,
@@ -61,12 +72,48 @@ export class EventController {
   }
 
   @Get('/:id')
-  async getEventAsset(@Param('id') id: string): Promise<EventModel> {
+  async getEvent(@Param('id') id: string): Promise<EventModel> {
     return this.eventService.event({ id: Number(id) });
   }
 
+  @Get('/:id/tags')
+  async getEventTags(
+    @Param('id') id: string,
+    @Body()
+    eventData: {
+      skip?: number;
+      take?: number;
+      cursor?: Prisma.Event_TagWhereUniqueInput;
+      where?: Prisma.Event_TagWhereInput;
+      orderBy?: Prisma.Event_TagOrderByWithRelationInput;
+    },
+  ): Promise<EventTagModel[]> {
+    return this.eventService.getEventTags({
+      ...eventData,
+      where: { event_id: Number(id) },
+    });
+  }
+
+  @Get('/:id/comments')
+  async getEventComments(
+    @Param('id') id: string,
+    @Body()
+    eventData: {
+      skip?: number;
+      take?: number;
+      cursor?: Prisma.CommentWhereUniqueInput;
+      where?: Prisma.CommentWhereInput;
+      orderBy?: Prisma.CommentOrderByWithRelationInput;
+    },
+  ): Promise<CommentModel[]> {
+    return this.eventService.getEventComments({
+      ...eventData,
+      where: { event_id: Number(id) },
+    });
+  }
+
   @Put('/:id')
-  async updateEventAsset(
+  async updateEvent(
     @Param('id') id: string,
     @Body()
     eventData: {
@@ -74,6 +121,8 @@ export class EventController {
       event_name: string;
       longitude: number;
       latitude: number;
+      time: Date;
+      participants: number;
       price_estimate: number;
       description: string;
     },

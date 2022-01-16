@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { User, Prisma } from '@prisma/client';
+import { User, Prisma, User_Link, Liked_Event } from '@prisma/client';
 
 @Injectable()
 export class UserService {
@@ -51,6 +51,43 @@ export class UserService {
   async deleteUser(where: Prisma.UserWhereUniqueInput): Promise<User> {
     return this.prisma.user.delete({
       where,
+    });
+  }
+
+  async getUserLinks(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.User_LinkWhereUniqueInput;
+    where?: Prisma.User_LinkWhereInput;
+    orderBy?: Prisma.User_LinkOrderByWithRelationInput;
+  }): Promise<User_Link[]> {
+    const { skip, take, cursor, where, orderBy } = params;
+    return this.prisma.user_Link.findMany({
+      skip,
+      take,
+      cursor,
+      where,
+      orderBy,
+    });
+  }
+
+  async getUserLikedEvents(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.User_LinkWhereUniqueInput;
+    where?: Prisma.User_LinkWhereInput;
+    orderBy?: Prisma.User_LinkOrderByWithRelationInput;
+  }): Promise<Liked_Event[]> {
+    const { skip, take, cursor, where, orderBy } = params;
+    return this.prisma.liked_Event.findMany({
+      skip,
+      take,
+      cursor,
+      where,
+      orderBy,
+      include: {
+        event: true,
+      },
     });
   }
 }
